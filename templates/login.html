@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="centered_content">
+            <div class="login_form_container{% if form.errors %} error{% endif %}">
+                <div class="login_form">
+                    <form method="post" action="{% url "django.contrib.auth.views.login" %}">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                        <p class="error">Unable to log in.</p>
+                        {% endif %}
+                        <div class="field username">
+                            <label for="id_username">Username:</label><br>
+                            <input id="id_username" name="username" maxlength="30" size="16" type="text">
+                        </div>
+                        <div class="field password">
+                            <label for="id_password">Password:</label><br>
+                            <input name="password" id="id_password" size="16" type="password">
+                        </div>
+                        <input type="checkbox" id="show_password"> <label for="show_password">Show password</label>
+                        <input type="submit" value="Log in" class="login_button">
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </form>
+                </div>
+                <div class="drophere">
+                    <p>Please drop your authentication file here.</p>
+                    <form method="post" action="{% url "fileauth.views.file_login_view" %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="key" id="key">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    var key_re = /^[a-zA-Z0-9]{128}$/;
+
+    $(document).ready(function() {
+        $('input#show_password').change(function(){
+            password = $("input#id_password").val();
+            $("input#id_password").remove();
+            if ($(this).is(':checked')) {
+                $("div.field.password").append('<input name="password" id="id_password" size="16" type="text" autocomplete="off">');
+            } else {
+                $("div.field.password").append('<input name="password" id="id_password" size="16" type="password">');
+            };
+            $("input#id_password").val(password);
+        });
+
+        if (window.FileReader) {
+            var container = $("div.container")[0];
+            var form_container = $("div.login_form_container")[0];
+            container.addEventListener('dragover', function(event) {
+                $(form_container).addClass("fileauth");
+            }, false);
+            container.addEventListener('dragleave', function(event) {
+                $(form_container).removeClass("fileauth");
+            }, false);
+            form_container.addEventListener('dragover', function(event) {
+                event.preventDefault();
+                $(form_container).addClass("hover");
+            }, false);
+            form_container.addEventListener('dragleave', function(event) {
+                $(form_container).removeClass("hover");
+            }, false);
+            form_container.addEventListener('drop', function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+                $(form_container).removeClass("hover");
+                var file_list = event.dataTransfer.files;
+
+                if (file_list.length == 1) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var result = e.target.result;
+                        if (key_re.test(result)) {
+                            $("div.drophere p").text("Logging in…")
+                            $("div.drophere form input#key").val(result);
+                            $("div.drophere form").submit();
+                        } else {
+                            $("div.drophere p").text("Invalid key.")
+                        }
+                    };
+                    reader.readAsText(file_list[0]);
+                } else {
+                    $("div.drophere p").text("Please drop exactly one file.")
+                }
+            }, false);
+        }
+    });
+    </script>
+{% endblock %}

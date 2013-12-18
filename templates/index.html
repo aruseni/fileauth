@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="welcome">
+        <p>Welcome, {{ user.username }}!</p>
+        <form method="post" action="{% url "django.contrib.auth.views.logout" %}">
+            {% csrf_token %}
+            <input type="submit" value="Log out">
+        </form>
+    </div>
+{% endblock %}

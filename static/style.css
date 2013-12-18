@@ -1,0 +1,89 @@
+body {
+    color: #000;
+    background-color: #fff;
+    font-family: arial, helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+div.welcome {
+    text-align: center;
+    font-size: 14px;
+    margin: 15px;
+}
+
+div.container {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+div.centered_content {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+div.login_form_container {
+    margin: 0 auto;
+    background-color: #c2d6ff;
+    width: 250px;
+    padding: 15px 15px 30px 15px;
+    border: 1px #84adff solid;
+    border-radius: 15px;
+}
+
+div.login_form_container.fileauth {
+    padding: 65px 30px;
+    width: 220px;
+    text-align: center;
+    border: 1px #aecdfd solid;
+    background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+}
+
+div.login_form_container.fileauth.hover {
+    background-color: #bbd2e7;
+    border: 1px solid #92a2da;
+}
+
+div.login_form_container.error {
+    background-color: #ff8484;
+    border: 1px #ff4848 solid;
+}
+
+div.login_form_container div.login_form {
+    width: 180px;
+    margin: 0 auto;
+}
+
+div.login_form_container.fileauth div.login_form {
+    display: none;
+}
+
+div.login_form_container div.login_form p.error {
+    width: 180px;
+    margin: 15px 0 15px 0;
+}
+
+div.login_form_container div.login_form div.field {
+    margin-top: 8px;
+}
+
+div.login_form_container div.login_form div.field input {
+    margin-top: 2px;
+    width: 100%;
+}
+
+div.login_form_container div.login_form input.login_button {
+    margin-top: 8px;
+}
+
+div.login_form_container div.drophere {
+    display: none;
+}
+
+div.login_form_container.fileauth div.drophere {
+    display: block;
+}
